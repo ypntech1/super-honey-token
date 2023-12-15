@@ -1,2 +1,2 @@
 # super-honey-token
-Super Honey Token 
+Super Honey Token (SHT)
