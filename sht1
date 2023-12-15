@@ -1,0 +1,38 @@
+# Example extended Terraform configuration for SHT project
+
+# Provider Configuration
+provider "aws" {
+  region = "us-west-2" # Example region
+  # Make sure to configure authentication
+}
+
+# Resource Definition: S3 Bucket (as a honeytoken)
+resource "aws_s3_bucket" "honeytoken_bucket" {
+  bucket = "sht-honeytoken-bucket"
+  acl    = "private"
+
+  # Optional: Add more configurations as needed
+}
+
+# Monitoring and Alerting Setup
+# Example: CloudWatch to monitor access and trigger alerts
+
+resource "aws_cloudwatch_metric_alarm" "honeytoken_access_alarm" {
+  alarm_name          = "honeytoken-access-alarm"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "NumberOfObjects" # Example metric
+  namespace           = "AWS/S3"
+  period              = "300"
+  statistic           = "Average"
+  threshold           = "1"
+  alarm_description   = "Alarm when the bucket accesses exceed threshold"
+  actions_enabled     = true
+
+  # Specify the action to take when alarm triggers
+}
+
+# Output configuration
+output "bucket_name" {
+  value = aws_s3_bucket.honeytoken_bucket.bucket
+}
